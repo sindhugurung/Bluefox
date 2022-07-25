@@ -1,7 +1,8 @@
 <?php
 
+use App\Models\Category;
 use Illuminate\Support\Facades\Route;
-
+use App\Models\Item;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -14,5 +15,11 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
-});
+    $categories = Category::root()->get();
+    // return $categories;
+      return view('welcome',[
+        'categories'=> $categories
+      ]);
+  });
+
+// Route::get('/categories/{category:id}/products', [ProductController::class, 'categories'])->name('categories');
