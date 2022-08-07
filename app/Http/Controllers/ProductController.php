@@ -22,25 +22,35 @@ class ProductController extends Controller
     public function create(Request $request)
     {
         $request->  validate([
-            'name' =>'required',
-            'description'=>'required',
-            'title'=>'required',
-            // 'image'=>'required',
-            'price'=>'required',
-            
+            'data*.name' =>'required',
+            'data*.description'=>'required',
+            'data*.title'=>'required',
+            'image'=>'mimes:jpg,jpeg,png|max:5048|unique:products',
+            'data*.price'=>'required',
+            'data*.category_id'=>'required'
         ]);
-
-            $product= Product::create([
+        // $product_data = json_decode($request->data);
+        if(!$request->has('image')){
+            return response()->json(['message' => 'Missing file'], 422);
+        }
+        $image_file=$request->file('image');
+        $imageFileName = uniqid() . '.' . $image_file->extension();
+        $image_file->storeAs('public/images/product_image', $imageFileName);
+        
+        Product::create([
                 'name'=> $request ->name,
                 'description'=>$request->description,
                 'title'=>$request->title,
-                'image'=>$request->image,   
+                'image'=>$imageFileName,   
                 'price'=>$request->price,
                 'category_id'=>$request->category_id
             ]);
 
-
-        return $product;
+        $response = [
+                "status" => true,
+                "message" => "Product Created Successfully",
+            ];
+        return response()->json($response, 201);
     }
     /**
      * Show the form for creating a new resource.
@@ -102,18 +112,14 @@ class ProductController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $request->  validate([
-            'name' =>'required',
-            'description'=>'required',
-            'title'=>'required',
-            // 'image'=>'required',
-            'price'=>'required']);
+
 
             $product = Product::find($id);
             $product->name = $request->name ? $request->name : $product->name;
             $product->description = $request->description ? $request->description : $product->description;
             $product->title = $request->title ? $request->title : $product->title;
             $product->price = $request->price ? $request->price : $product->price;
+            $product->category_id = $request->category_id ? $request->category_id : $product->category_id;
             $product->update();
     
             $errResponse = [

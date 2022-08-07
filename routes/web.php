@@ -3,6 +3,7 @@
 use App\Models\Category;
 use Illuminate\Support\Facades\Route;
 use App\Models\Item;
+use App\Http\Controllers\ProductController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -22,4 +23,4 @@ Route::get('/', function () {
       ]);
   });
 
-// Route::get('/categories/{category:id}/products', [ProductController::class, 'categories'])->name('categories');
+Route::get('/categories/{category:id}', [ProductController::class, 'categories'])->name('categories');

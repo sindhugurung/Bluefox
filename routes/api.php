@@ -33,25 +33,30 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::put('/feedback/{id}', [App\Http\Controllers\FeedbackController::class, 'update']);
     Route::delete('/feedback/{id}/delete', [App\Http\Controllers\FeedbackController::class, 'destroy']);;
 
+
     Route::controller(CategoryController::class)->group( function(){
 
         Route::get('/category/add','create')->name('category.create');
-        Route::get('/cat','index');
-        Route::get('/cat/sub','subcategory');
-        Route::post('/category/edit/{$id}', 'edit');
+        Route::get('/category/list','index');
+        Route::get('/subCategory/list','subcategory');
+        Route::delete('/cat/delete/{id}','destroy');
+        Route::put('/category/{id}/update', 'editCategory');
+        Route::put('/subCategory/{id}/update', 'editSubCategory');
+    
     
         // Route::get('/cat/show','show')->name('category.store');
-        // Route::group(['middleware' => 'auth:sanctum'], function () {
-        //     // Route::get('/category/add','create')->name('category.create');;
-        // });
+        Route::group(['middleware' => 'auth:sanctum'], function () {
+        });
     });
-    
 });
     Route::controller(ProductController::class)->group(function () {
         Route::group(['middleware' => 'auth:sanctum'], function () {
+        Route::get('/categories/{category:id}', 'categories')->name('categories');
         Route::get('/createProduct', 'create');
-        Route::get('/product/id', 'show');
+        Route::get('/product/{id}', 'show');
         Route::put('/product/{id}/update', 'update');
         Route::delete('/product/{id}/delete', 'destroy');
         });
     });
+    Route::get('/categories/{category:id}', [ProductController::class, 'categories'])->name('categories');
+    
