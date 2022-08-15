@@ -60,7 +60,8 @@ class ProductController extends Controller
     
     public function categories($id)
         {
-            return $category = Category::with('product')->find($id); 
+            $category = Category::with('product')->find($id); 
+            return response()->json($category, 200);
     
         }
     /**
