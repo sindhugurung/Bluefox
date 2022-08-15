@@ -19,8 +19,9 @@ class CreateFeedbackTable extends Migration
             ->constrained();
             $table->foreignId('order_id')
             ->constrained();
-            $table->string('feedback_desc');
-            $table->string('feedback_title');
+            $table->string('desc');
+            $table->string('title');
+            $table->string('image')->unique();
             $table->timestamps();
         });
     }

@@ -19,6 +19,7 @@ use App\Http\Controllers\ProductController;
 Route::get('/signup', [UserController::class,'create']);
 Route::post('/login', [App\Http\Controllers\UserController::class, 'login']);
 Route::post('/createProduct', [App\Http\Controllers\ProductController::class, 'create']);
+Route::post('/sendfeedback', [App\Http\Controllers\FeedbackController::class, 'create']);
 Route::group(['middleware' => 'auth:sanctum'], function () {
 
     // User Section
@@ -28,7 +29,6 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::delete('/user/{id}/delete', [App\Http\Controllers\UserController::class, 'destroy']);
 
     // Feedback Section
-    Route::get('/sendfeedback', [FeedbackController::class,'create']);
     Route::get('/feedback', [App\Http\Controllers\FeedbackController::class, 'index']);
     Route::put('/feedback/{id}', [App\Http\Controllers\FeedbackController::class, 'update']);
     Route::delete('/feedback/{id}/delete', [App\Http\Controllers\FeedbackController::class, 'destroy']);;

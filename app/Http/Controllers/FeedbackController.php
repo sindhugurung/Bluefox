@@ -25,34 +25,38 @@ class FeedbackController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(Request $validation)
+    public function create(Request $feedback)
     {
-        $validation->validate([
-        'feedback_desc'=>'required',
-        'user_id'=>'required',
-        'order_id'=>'required',
-        'feedback_desc'=>'required|min:1|max:500]']);
+        $feedback->validate([
+            'data*.user_id' => 'required',
+            'data*.order_id' => 'required',
+            'data*.desc' => 'required',
+            'data*.title' => 'required',
+            'image' => 'required|mimes:jpg,jpeg,png|max:5048'
 
-    
-        $user = User::find($validation->user_id);
-        if (!$user) {
-            return response()->json(["message" => "User not found"], 404);
-        }
+        ]);
+        // return $request;
 
+        $feedback_data= json_decode($feedback->data);
+        $file_feedback = $feedback->file('image');
+        $filename = uniqid() . '.' . $file_feedback->extension();
+        $file_feedback->storeAs('public/images/feedback_image', $filename);
 
-        $order = Order::find($validation->order_id);
-        if (!$order) {
-            return response()->json(["message" => "Order not found"], 404);
-        }
-
-        $feedback=Feedback::create([
-            'feedback_desc' => $validation->feedback_desc,
-            'user_id' => $validation->user_id,
-            'order_id' => $validation->order_id,
-            'feedback_title' => $validation->feedback_title
+        Feedback::create([
+            'user_id' => $feedback_data->user_id,
+            'order_id' => $feedback_data->order_id,
+            'desc' => $feedback_data->desc,
+            'title' => $feedback_data->title,
+            'image' => $filename
         ]);
 
-        return $feedback;
+        $response = [
+            "status" => true,
+            "message" => "Feedback Added Successfully",
+
+        ];
+
+        return $response;
     }
     /**
      * Store a newly created resource in storage.
