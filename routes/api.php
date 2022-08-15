@@ -18,7 +18,7 @@ use App\Http\Controllers\ProductController;
 */
 Route::get('/signup', [UserController::class,'create']);
 Route::post('/login', [App\Http\Controllers\UserController::class, 'login']);
-
+Route::post('/createProduct', [App\Http\Controllers\ProductController::class, 'create']);
 Route::group(['middleware' => 'auth:sanctum'], function () {
 
     // User Section
@@ -52,7 +52,6 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::controller(ProductController::class)->group(function () {
         Route::group(['middleware' => 'auth:sanctum'], function () {
         Route::get('/categories/{category:id}', 'categories')->name('categories');
-        Route::get('/createProduct', 'create');
         Route::get('/product/{id}', 'show');
         Route::put('/product/{id}/update', 'update');
         Route::delete('/product/{id}/delete', 'destroy');

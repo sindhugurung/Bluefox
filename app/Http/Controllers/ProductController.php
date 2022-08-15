@@ -13,7 +13,7 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-   
+    
     public function index()
     {
         //
@@ -21,36 +21,36 @@ class ProductController extends Controller
 
     public function create(Request $request)
     {
-        $request->  validate([
-            'data*.name' =>'required',
-            'data*.description'=>'required',
-            'data*.title'=>'required',
-            'image'=>'mimes:jpg,jpeg,png|max:5048|unique:products',
-            'data*.price'=>'required',
-            'data*.category_id'=>'required'
+        $request->validate([
+            'props*.name' => 'required|unique:banners|min:3|max:255',
+            'props*.description' => 'required',
+            'props*.title' => 'required',
+            'image' => 'required|mimes:jpg,jpeg,png|max:5048',
+            'props*.category_id' => 'required'
+
         ]);
-        // $product_data = json_decode($request->data);
-        if(!$request->has('image')){
-            return response()->json(['message' => 'Missing file'], 422);
-        }
-        $image_file=$request->file('image');
-        $imageFileName = uniqid() . '.' . $image_file->extension();
-        $image_file->storeAs('public/images/product_image', $imageFileName);
-        
+        // return $request;
+
+        $product_data= json_decode($request->props);
+        $file_product = $request->file('image');
+        $filename = uniqid() . '.' . $file_product->extension();
+        $file_product->storeAs('public/images/product_image', $filename);
+
         Product::create([
-                'name'=> $request ->name,
-                'description'=>$request->description,
-                'title'=>$request->title,
-                'image'=>$imageFileName,   
-                'price'=>$request->price,
-                'category_id'=>$request->category_id
-            ]);
+            'name' => $product_data->name,
+            'description' => $product_data->description,
+            'title' => $product_data->title,
+            'image' => $filename,
+            'category_id'=> $product_data->category_id
+        ]);
 
         $response = [
-                "status" => true,
-                "message" => "Product Created Successfully",
-            ];
-        return response()->json($response, 201);
+            "status" => true,
+            "message" => "Product Added Successfully",
+
+        ];
+
+        return $response;
     }
     /**
      * Show the form for creating a new resource.
@@ -60,9 +60,8 @@ class ProductController extends Controller
     
     public function categories($id)
         {
-            $category = Category::with('product')->find($id); 
+            return $category = Category::with('product')->find($id); 
     
-            return view('products.categories')->with('products', $category);
         }
     /**
      * Store a newly created resource in storage.
@@ -118,7 +117,6 @@ class ProductController extends Controller
             $product->name = $request->name ? $request->name : $product->name;
             $product->description = $request->description ? $request->description : $product->description;
             $product->title = $request->title ? $request->title : $product->title;
-            $product->price = $request->price ? $request->price : $product->price;
             $product->category_id = $request->category_id ? $request->category_id : $product->category_id;
             $product->update();
     
@@ -152,7 +150,7 @@ class ProductController extends Controller
             return response()->json(["message" => "Product not found"], 404);
         }
         $product->delete();
-        $successResponse = ["message" => "User deleted successfully"];
+        $successResponse = ["message" => "Product deleted successfully"];
         return response()->json($successResponse, 200);
     }
 }
