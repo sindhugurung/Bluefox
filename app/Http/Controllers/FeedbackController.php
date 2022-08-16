@@ -103,7 +103,7 @@ class FeedbackController extends Controller
     {
         
         $feedback = Feedback::find($id);
-        $feedback->feedback_desc = $validation ? $validation->name : $feedback->feedback_desc;
+        $feedback->feedback_desc = $validation ? $validation->feedback_desc : $feedback->feedback_desc;
         
         $feedback->update();
         $errMessage = [

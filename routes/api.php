@@ -6,6 +6,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\DeliveryController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -57,5 +58,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
         Route::delete('/product/{id}/delete', 'destroy');
         });
     });
+    Route::Resource('/shipping',DeliveryController::class);
+
     Route::get('/categories/{category:id}', [ProductController::class, 'categories'])->name('categories');
     
