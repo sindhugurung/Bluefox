@@ -17,6 +17,8 @@ class CreateOrdersTable extends Migration
             $table->id();
             $table->foreignId('user_id')
             ->constrained();
+             $table->foreignId('cart_id')
+            ->constrained();
             $table->enum('status',['pending','delivered']);
             $table->string('quantity');
             $table->string('discount');

@@ -22,15 +22,9 @@ class OrderController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(Request $request)
+    public function create()
     {
-        $request->validate([
-        'status'=>'required',
-       'quantity'=>'required',
-       'discount',
-       'total'=>'required', 
-       'payment'=>'required']);
-       return $request;
+        //
     }
 
     /**

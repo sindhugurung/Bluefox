@@ -7,6 +7,7 @@ use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\DeliveryController;
+use App\Http\Controllers\CartController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -56,6 +57,14 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
         Route::get('/product/{id}', 'show');
         Route::put('/product/{id}/update', 'update');
         Route::delete('/product/{id}/delete', 'destroy');
+        });
+    });
+    Route::controller(CartController::class)->group(function () {
+        Route::group(['middleware' => 'auth:sanctum'], function () {
+        Route::post('/addCart','addToCart');
+        Route::get('/cart','index');
+        Route::put('/cart/{id}', 'update');
+        Route::delete('/cart/{id}/delete', 'destroy');
         });
     });
     Route::Resource('/shipping',DeliveryController::class);

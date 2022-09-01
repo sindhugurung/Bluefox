@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use App\Models\Cart;
+use Session;
 
 class ProductController extends Controller
 {
@@ -154,4 +156,7 @@ class ProductController extends Controller
         $successResponse = ["message" => "Product deleted successfully"];
         return response()->json($successResponse, 200);
     }
+
+    
+
 }
