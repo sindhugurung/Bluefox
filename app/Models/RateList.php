@@ -7,12 +7,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class RateList extends Model
 {
+    
     use HasFactory;
     protected $fillable=[
-        'quantity', 'normal_price','urgent_price','product_id','discount',
+        'range_from','range_to', 'i_normal','i_urgent','product_id','c_normal','c_urgent','c_discount','i_discount'
     ];
 
     public function product(){
-        return $this->belongsTo(Product::class);
+        return $this->belingsTo(Product::class);
     }
+    
 }

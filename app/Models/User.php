@@ -31,7 +31,9 @@ class User extends Authenticatable
         'pan_image',
         'cover_page',
     ];
-
+    public function cart(){
+        return $this->hasOne(Cart::class);
+}
     /**
      * The attributes that should be hidden for serialization.
      *

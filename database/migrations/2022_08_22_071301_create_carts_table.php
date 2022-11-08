@@ -20,6 +20,7 @@ class CreateCartsTable extends Migration
             $table->foreignId('user_id')
             ->constrained();
             $table->integer('quantity');
+            $table->string('ord_type');
             $table->timestamps();
         });
     }
